@@ -22,8 +22,11 @@
     state: installed
 - name: load app_prereq task
   ansible.builtin.import_tasks:
-    file: app_prereq.yaml
+    file: app_prereq.yml
 - name: Install Nodejs dependencies
   ansible.builtin.shell: npm install
   args:
     chdir: /app
+- name: load schema_setup task
+  ansible.builtin.import_tasks:
+    file: schema_setup.yml
