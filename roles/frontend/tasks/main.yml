@@ -19,7 +19,7 @@
     name: nginx
     state: installed
 - name: Copy Roboshop Nginx Configuration File
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: roboshop.conf
     dest: /etc/nginx/default.d/roboshop.conf
 - name: Remove Old App Content
