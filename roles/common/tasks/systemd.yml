@@ -1,0 +1,9 @@
+#func_print_head "copying service file to systemd"
+#cp ${script_path}/${component}.service /etc/systemd/system/${component}.service &>>$log_file
+#func_stat_check $?
+#func_print_head "Staring ${component} service"
+#systemctl daemon-reload
+#systemctl enable ${component}
+#systemctl restart ${component} &>>$log_file
+#func_stat_check $?
+
