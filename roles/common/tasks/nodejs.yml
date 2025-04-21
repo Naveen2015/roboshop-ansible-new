@@ -1,0 +1,29 @@
+#func_print_head "configuring and downloading nodejs"
+#dnf module disable nodejs -y &>>$log_file
+#dnf module enable nodejs:18 -y &>>$log_file
+#dnf install nodejs -y &>>$log_file
+#func_stat_check $?
+#func_app_prereq
+#func_print_head "Downloading Nodejs dependencies"
+#npm install &>>$log_file
+#func_stat_check $?
+#
+#func_systemd
+#func_print_head "calling schema setup"
+#func_schema_setup
+
+- name: Downloading Nodejs
+  ansible.builtin.shell: |
+    dnf module disable nodejs -y
+    dnf module enable nodejs:18 -y
+- name: Install the nodejs 18
+  ansible.builtin.dnf:
+    name: nodejs
+    state: installed
+- name: load app_prereq task
+  ansible.builtin.import_tasks:
+    file: app_prereq.yaml
+- name: Install Nodejs dependencies
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
