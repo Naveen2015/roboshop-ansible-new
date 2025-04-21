@@ -35,7 +35,7 @@
     src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
     dest: /usr/share/nginx/html
     remote_src: yes
-- name: Start Nginx Serice
+- name: Start Nginx Service
   ansible.builtin.systemd_service:
     state: restarted
     name: nginx
