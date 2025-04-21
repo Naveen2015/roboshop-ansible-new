@@ -7,3 +7,13 @@
 #systemctl restart ${component} &>>$log_file
 #func_stat_check $?
 
+- name: Copy {{ component }} service file
+  ansible.builtin.template:
+    src: "{{component}}".service
+    dest: /etc/systemd/system/{{component}}.service
+- name: Start {{component}} Service
+  ansible.builtin.systemd_service:
+    state: restarted
+    name: { { component } }
+    daemon_reload: true
+    enabled: true
