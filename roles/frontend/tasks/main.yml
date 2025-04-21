@@ -1,3 +1,47 @@
-- name: frontend role
-  ansible.builtin.debug:
-    msg: Component - Frontend
+
+#    func_print_head "Copying nginx configuration"
+#    cp roboshop.conf /etc/nginx/default.d/roboshop.conf &>>$log_file
+#    func_stat_check $?
+#    func_print_head "Remove default content"
+#    rm -rf /usr/share/nginx/html/*
+#    func_print_head "Downloading and Unzip app content"
+#    curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip &>>$log_file
+#    cd /usr/share/nginx/html
+#    unzip /tmp/frontend.zip &>>$log_file
+#    func_stat_check $?
+#    func_print_head "Starting Frontend Service"
+#    systemctl restart nginx
+#    systemctl enable nginx
+#    func_stat_check $?
+  
+- name: Install Nginx
+  ansible.builtin.yum:
+    name: nginx
+    state: installed
+- name: Copy Roboshop Nginx Configuration File
+  ansible.builtin.copy:
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+- name: Remove Old App Content
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+- name: Create App Directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+- name: Download App Content and Unzip it
+  ansible.builtin.unarchive:
+    src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+- name: Start Nginx Serice
+  ansible.builtin.systemd_service:
+    state: restarted
+    name: nginx
+    daemon_reload: true
+    enabled: true
+
+
+
+
