@@ -20,5 +20,5 @@
         name: mysql
 
     - name: Load mysql schema
-      ansible.builtin.shell: mysql -h mysql-dev.kruthikadevops.online -uroot -pRoboShop@1 < /app/schema/shipping.sql
+      ansible.builtin.shell: mysql -h {{ lookup('aws_ssm','dev.shipping.mysql_url', region='us-east-1') }} -u{{ lookup('aws_ssm','dev.shipping.mysql_user', region='us-east-1') }} -p{{ lookup('aws_ssm','dev.shipping.mysql_password', region='us-east-1') }} < /app/schema/{{component}}.sql
 
