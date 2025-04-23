@@ -1,0 +1,29 @@
+#func_print_head "Installing Maven"
+#dnf install maven -y &>>$log_file
+#func_stat_check $?
+#
+#func_app_prereq
+#func_print_head "maven build"
+#mvn clean package &>>$log_file
+#func_stat_check $?
+#mv target/${component}-1.0.jar ${component}.jar
+#func_schema_setup
+#func_systemd
+
+- name: Install Maven
+  ansible.builtin.yum:
+    name: maven
+    state: installed
+- name: load app_prereq task
+  ansible.builtin.import_tasks:
+    file: app_prereq.yml
+- name: Build maven module
+  ansible.builtin.shell: mvn clean package ; mv target/{{component}}-1.0.jar {{component}}.jar
+  args:
+    chdir: /app
+- name: load schema_setup task
+  ansible.builtin.import_tasks:
+    file: schema_setup.yml
+- name: load systemd task
+  ansible.builtin.import_tasks:
+    file: systemd.yml
