@@ -16,7 +16,7 @@
   when: schema_setup == "mysql"
   block:
     - name: Install mysql client
-      ansible.builtin.yum:
+      ansible.builtin.dnf:
         name: mysql
 
     - name: Load mysql schema
