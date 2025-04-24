@@ -1,0 +1,29 @@
+#unc_print_head "Installing Python"
+#dnf install python36 gcc python3-devel -y &>>$log_file
+#func_stat_check $?
+#func_app_prereq
+#func_print_head "Installing Python dependencies"
+#pip3.6 install -r requirements.txt &>>$log_file
+#func_stat_check $?
+#
+#func_print_head "Editing rabbitmq password in service file"
+#sed -i -e "s|rabbitmq_appuser_password|${rabbitmq_appuser_password}|" ${script_path}/payment.service &>>$log_file
+#func_stat_check $?
+#
+#func_systemd
+
+- name: Install python
+  ansible.builtin.dnf:
+    name:
+      - python36
+      - gcc
+      - python3-devel
+    state: installed
+- name: load app_prereq task
+  ansible.builtin.import_tasks:
+    file: app_prereq.yml
+- name: Installing python dependencies
+  ansible.builtin.shell: pip3.6 install -r requirements.txt
+- name: load systemd task
+  ansible.builtin.import_tasks:
+    file: systemd.yml
