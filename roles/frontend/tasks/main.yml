@@ -14,9 +14,15 @@
   ansible.builtin.file:
     path: /usr/share/nginx/html
     state: directory
-- name: Download App Content and Unzip it
+#- name: Download App Content and Unzip it
+#  ansible.builtin.unarchive:
+#    src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+#    dest: /usr/share/nginx/html
+#    remote_src: yes
+
+- name: Download App Content and Unzip its
   ansible.builtin.unarchive:
-    src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+    src: http://172.31.42.37:8081/repository/{{component}}/{{component}}-{{app_version}}.zip
     dest: /usr/share/nginx/html
     remote_src: yes
 - name: Start Nginx Service
